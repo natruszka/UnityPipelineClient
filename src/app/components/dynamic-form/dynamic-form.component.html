@@ -1,0 +1,55 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="gameObjectForm" class="container mt-4">
+  <div formArrayName="gameObjects">
+    <div *ngFor="let gameObject of gameObjects.controls; let i = index" [formGroupName]="i"
+         class="border p-3 mb-3 bg-light rounded">
+      <h3 class="mb-3">GameObject {{ i + 1 }}</h3>
+      <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input class="form-control" formControlName="name" placeholder="Name" type="text"/>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Position</label>
+        <input class="form-control" formControlName="position_x" placeholder="0" type="number"/>
+        <input class="form-control" formControlName="position_y" placeholder="0" type="number"/>
+        <input class="form-control" formControlName="position_z" placeholder="0" type="number"/>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Rotation</label>
+        <input class="form-control" formControlName="rotation_x" placeholder="0" type="number"/>
+        <input class="form-control" formControlName="rotation_y" placeholder="0" type="number"/>
+        <input class="form-control" formControlName="rotation_z" placeholder="0" type="number"/>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Scale</label>
+        <input class="form-control" formControlName="scale_x" placeholder="1" type="number"/>
+        <input class="form-control" formControlName="scale_y" placeholder="1" type="number"/>
+        <input class="form-control" formControlName="scale_z" placeholder="1" type="number"/>
+      </div>
+
+      <div class="mb-3" formArrayName="componentsDto">
+        <div *ngFor="let component of componentsDto(i).controls; let j = index" [formGroupName]="j">
+          <div class="mb-2">
+            <label class="form-label">Component Type</label>
+            <select class="form-select" formControlName="type">
+              <option value="Mesh">Mesh</option>
+              <option value="Material">Material</option>
+              <option value="Texture">Texture</option>
+              <option value="Prefab">Prefab</option>
+            </select>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">File</label>
+            <input (change)="onFileSelect($event, i, j)" class="form-control" type="file"/>
+          </div>
+          <button (click)="removeComponent(i, j)" class="btn btn-danger" type="button">Remove Component</button>
+        </div>
+        <button (click)="addComponent(i)" class="btn btn-primary mt-3" type="button">Add Component</button>
+      </div>
+      <button (click)="removeGameObject(i)" class="btn btn-danger" type="button">Remove GameObject</button>
+    </div>
+  </div>
+
+  <button (click)="addGameObject()" class="btn btn-success" type="button">Add GameObject</button>
+  <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+
